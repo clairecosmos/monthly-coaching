@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>每月自我狀態對焦｜Claire</title>
+<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --olive: #626742;
+    --sage: #9BA17F;
+    --sand: #A5976F;
+    --sand-ink: #6E6650;
+    --gray: #545454;
+    --cream: #E1D9C5;
+    --yellow: #F8D780;
+    --white: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--gray);
+    background: var(--white);
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wide { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+  .read { max-width: 700px; margin: 0 auto; padding: 0 32px; }
+  .mid  { max-width: 780px; margin: 0 auto; padding: 0 32px; }
+  .narrow { max-width: 700px; margin: 0 auto; padding: 0 32px; }
+
+  h1, h2, h3 {
+    color: var(--olive);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
+  h2 { font-size: 30px; }
+
+  section { position: relative; padding: 96px 0; scroll-margin-top: 64px; }
+  section.bg-cream { background: var(--cream); }
+  section.bg-white { background: var(--white); }
+  section.bg-olive { background: var(--olive); color: #EFEBE1; }
+
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sand-ink);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary { background: var(--yellow); color: var(--olive); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(248,215,128,0.45); }
+  .btn-ghost { background: transparent; color: var(--olive); border: 1.5px solid var(--sand-ink); }
+  .btn-ghost:hover { background: var(--olive); color: #fff; border-color: var(--olive); }
+  .btn-yellow { background: var(--yellow); color: var(--olive); border: 1.5px solid var(--olive); }
+  .btn-yellow:hover { background: var(--olive); color: #fff; border-color: var(--olive); }
+  .btn-primary.bordered { border: 1.5px solid var(--olive); }
+  .btn-wrap { text-align: center; margin-top: 40px; }
+
+  /* ---------- 吸頂導覽列 ---------- */
+  :root { --nav-green: #626742; }
+
+  .pathless-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: var(--nav-green);
+    color: #FFFFFF;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .pathless-nav.is-visible { transform: translateY(0); opacity: 1; }
+
+  .pathless-nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 56px;
+  }
+
+  .pathless-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pathless-nav-links a {
+    position: relative;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: background 0.2s ease, opacity 0.2s ease;
+    opacity: 0.88;
+  }
+  .pathless-nav-links a:hover { background: rgba(255,255,255,0.12); opacity: 1; }
+
+  .pathless-nav-links a.is-active {
+    opacity: 1;
+    font-weight: 700;
+  }
+  .pathless-nav-links a.is-active::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 2px;
+    height: 2px;
+    background: var(--yellow);
+    border-radius: 2px;
+  }
+
+  .pathless-nav-cta {
+    flex-shrink: 0;
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--olive);
+    font-weight: 700;
+    font-size: 13.5px;
+    text-decoration: none;
+    padding: 9px 18px;
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .pathless-nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(248,215,128,0.4); }
+
+  .pathless-nav-toggle {
+    display: none;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+  }
+  .pathless-nav-toggle span,
+  .pathless-nav-toggle span::before,
+  .pathless-nav-toggle span::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    height: 2px;
+    background: #FFFFFF;
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .pathless-nav-toggle span { top: 16px; }
+  .pathless-nav-toggle span::before { top: -8px; }
+  .pathless-nav-toggle span::after { top: 8px; }
+  .pathless-nav.menu-open .pathless-nav-toggle span { background: transparent; }
+  .pathless-nav.menu-open .pathless-nav-toggle span::before { transform: translateY(8px) rotate(45deg); }
+  .pathless-nav.menu-open .pathless-nav-toggle span::after { transform: translateY(-8px) rotate(-45deg); }
+
+  /* 桌機／平板：所有選單文字完整顯示，不需左右滑動 */
+  @media (min-width: 861px) {
+    .pathless-nav-links { flex-wrap: nowrap; overflow: visible; }
+  }
+
+  /* 手機：文字無法完整顯示，改為漢堡選單展開；CTA 永遠可見 */
+  @media (max-width: 860px) {
+    .pathless-nav-toggle { display: block; }
+
+    .pathless-nav-links {
+      display: none;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background: var(--nav-green);
+      max-height: calc(100vh - 56px);
+      overflow-y: auto;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.18);
+    }
+    .pathless-nav.menu-open .pathless-nav-links { display: flex; }
+    .pathless-nav-links a {
+      padding: 14px 20px;
+      border-radius: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-size: 15px;
+    }
+  }
+
+  /* Signature vine divider */
+  .vine {
+    width: 100%;
+    height: 56px;
+    display: block;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    background: var(--cream);
+    padding: 96px 0;
+  }
+  .hero-grid {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 42px;
+    margin-bottom: 28px;
+  }
+  .hero .sub-label {
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--sand-ink);
+    margin-bottom: 8px;
+  }
+  .hero-desc {
+    font-size: 17px;
+    color: var(--gray);
+    margin-bottom: 36px;
+  }
+  .cover-photo {
+    width: 100%;
+    aspect-ratio: 8/1;
+    line-height: 0;
+    background: #E1D9C5;
+    overflow: hidden;
+  }
+  .cover-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+  /* ---------- 適合誰 ---------- */
+  .resonate {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 32px;
+    text-align: left;
+  }
+  .resonate p { margin-bottom: 22px; font-size: 17px; }
+  .resonate .quote-line,
+  .editorial .pull,
+  .about-text-1 .pull-quote,
+  .about-text-2 .pull-quote,
+  .coach-quote {
+    font-size: 17px;
+    color: var(--olive);
+    font-weight: 600;
+    line-height: 1.7;
+    padding: 8px 0 8px 22px;
+    border-left: 3px solid var(--yellow);
+    margin: 32px 0;
+  }
+  .resonate .closer {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--olive);
+    margin-top: 40px;
+  }
+
+  /* ---------- 教練是什麼 ---------- */
+  .coach-body { margin-bottom: 80px; }
+  .coach-body p { font-size: 17px; }
+  .video-frame {
+    aspect-ratio: 16/9;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+  }
+  .video-frame iframe { width: 100%; height: 100%; border: none; }
+
+  .coach-media {
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    gap: 24px;
+    align-items: start;
+    margin-top: 32px;
+  }
+  .cert-frame img { width: 100%; height: auto; display: block; }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .inline-photo {
+    width: 100%;
+    height: 260px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 40px 0;
+  }
+  .inline-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+  .analogy-box {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 28px 32px;
+    font-size: 16px;
+    margin-top: 24px;
+  }
+  .analogy-box p { margin-bottom: 14px; }
+  .analogy-box p:last-child { margin-bottom: 0; }
+
+  table.diff-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  table.diff-table th {
+    text-align: left;
+    padding: 14px 14px;
+    background: var(--olive);
+    color: #fff;
+    font-weight: 600;
+  }
+  table.diff-table th:first-child { border-radius: 12px 0 0 0; }
+  table.diff-table th:last-child { border-radius: 0 12px 0 0; }
+  table.diff-table th:first-child, table.diff-table td:first-child { white-space: nowrap; width: 1%; }
+  table.diff-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid #e5e0d3;
+    vertical-align: top;
+    background: #F8F5EC;
+  }
+  table.diff-table tr:last-child td { border-bottom: none; }
+  table.diff-table tr.highlight td { background: var(--yellow); font-weight: 600; color: var(--olive); }
+
+  /* ---------- 3.5 summary card ---------- */
+  .summary-card {
+    background: var(--olive);
+    color: #EFEBE1;
+    border-radius: 24px;
+    padding: 56px 48px;
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .summary-card .hl {
+    background: linear-gradient(to bottom, transparent 82%, var(--yellow) 82%);
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 0 2px;
+  }
+  .summary-card .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    padding: 6px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 20px;
+  }
+  .summary-card h3 { color: #fff; font-size: 26px; margin-bottom: 20px; }
+  .summary-card p { font-size: 17px; opacity: 0.92; margin-bottom: 8px; }
+
+  /* ---------- 品牌哲學 & 理想藍圖 (editorial pull) ---------- */
+  .editorial {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .editorial p { font-size: 17px; margin-bottom: 24px; }
+  .editorial .pull {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--olive);
+    line-height: 1.7;
+    padding: 8px 0 8px 22px;
+    border-left: 3px solid var(--yellow);
+    margin: 32px 0;
+  }
+
+  /* ---------- 方法論 cards ---------- */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .method-card {
+    background: var(--white);
+    border: 1px solid #e5e0d3;
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .method-card.full { grid-column: 1 / -1; }
+  .method-card h4 {
+    color: var(--olive);
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .method-card p { font-size: 17px; margin: 0; }
+
+  /* ---------- 我是誰 ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    column-gap: 64px;
+    row-gap: 0;
+    align-items: start;
+  }
+  .about-media {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    position: sticky;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .about-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .about-text-1 { grid-column: 2; grid-row: 1; }
+  .about-text-2 { grid-column: 2; grid-row: 2; }
+  #videoSlotSidebar:empty { display: none; }
+  #videoSlotText { display: none; }
+
+  .note-video-wrap {
+    width: 100%;
+  }
+  .note-video {
+    width: 100%;
+    aspect-ratio: 416/848;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .note-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .note-video-caption {
+    font-size: 13px;
+    color: var(--sand-ink);
+    text-align: center;
+    margin-top: 10px;
+  }
+  .about-text-1 p, .about-text-2 p { font-size: 17px; margin-bottom: 22px; }
+  .about-text-1 strong, .about-text-2 strong { color: var(--olive); }
+  .hl {
+    background: linear-gradient(to bottom, transparent 62%, var(--yellow) 62%);
+    font-weight: 600;
+    color: var(--olive);
+    padding: 0 2px;
+  }
+  .about-text-1 .pull-quote, .about-text-2 .pull-quote {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--olive);
+    line-height: 1.6;
+    padding: 8px 0 8px 24px;
+    border-left: 3px solid var(--yellow);
+    margin: 36px 0;
+  }
+
+  /* ---------- 服務在做什麼 ---------- */
+  .garden-block { margin-bottom: 48px; }
+  .garden-block h4 {
+    font-size: 19px;
+    color: var(--olive);
+    margin-bottom: 14px;
+  }
+  .garden-block p { font-size: 17px; }
+
+  .talk-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin: 40px 0;
+  }
+  .talk-card {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 28px 24px;
+  }
+  .talk-card {
+    background: var(--white);
+    border: 1.5px solid var(--sand);
+  }
+  .talk-card .label {
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--olive);
+    background: var(--yellow);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .talk-card h5 { font-size: 17px; color: var(--olive); margin-bottom: 10px; }
+  .talk-card p { font-size: 17px; margin: 0; }
+
+  /* ---------- 方案結構 ---------- */
+  .pricing-card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 1.5px solid var(--sand);
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  .pricing-row {
+    padding: 36px 40px;
+    border-bottom: 1px solid #e5e0d3;
+  }
+  .pricing-row:last-child { border-bottom: none; }
+  .pricing-row .ptitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .pricing-row .ptitle span:first-child {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--olive);
+  }
+  .pricing-row .ptitle span:last-child {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--olive);
+  }
+  .pricing-row p { font-size: 17px; margin: 0; }
+  .pricing-row.featured { background: #F8F5EC; }
+  .limit-tag {
+    display: inline-block;
+    margin-top: 14px;
+    background: var(--yellow);
+    color: var(--olive);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+
+  .why-panel {
+    max-width: 640px;
+    margin: 40px auto 0;
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 32px 36px;
+  }
+  .why-panel h5 { color: var(--sand-ink); font-size: 21px; font-weight: 700; margin-bottom: 14px; }
+  .why-panel p { font-size: 17px; margin-bottom: 12px; }
+  .why-panel p:last-child { margin-bottom: 0; }
+
+  /* ---------- 數據 ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .stat-block {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 36px 32px;
+  }
+  .stat-block .num {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--sage);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .stat-block p { font-size: 17px; }
+  .stat-source { font-size: 13px; color: var(--sand-ink); margin-top: 10px; }
+
+  /* ---------- 見證 ---------- */
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  .testi-cta-cell { display: flex; align-items: center; justify-content: center; }
+  .btn-lg { padding: 22px 48px; font-size: 17px; }
+  .testi-card { }
+  .testi-card .testi-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--olive);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .testi-card .testi-title .key { color: var(--sage); }
+  .testi-card img {
+    width: 100%;
+    border-radius: 14px;
+    display: block;
+  }
+  .testi-cta-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---------- FAQ Accordion ---------- */
+  .faq-item {
+    border-bottom: 1px solid #e5e0d3;
+  }
+  .faq-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 24px 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16.5px;
+    font-weight: 600;
+    color: var(--olive);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .faq-q .icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    position: relative;
+  }
+  .faq-q .icon::before, .faq-q .icon::after {
+    content: '';
+    position: absolute;
+    background: var(--sand);
+    transition: transform 0.25s ease;
+  }
+  .faq-q .icon::before { width: 100%; height: 2px; top: 10px; left: 0; }
+  .faq-q .icon::after { width: 2px; height: 100%; top: 0; left: 10px; }
+  .faq-item.open .faq-q .icon::after { transform: rotate(90deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .faq-a-inner {
+    padding: 0 4px 26px;
+    font-size: 17px;
+    color: var(--gray);
+  }
+  .faq-a-inner p { margin-bottom: 10px; }
+  .faq-a-inner p:last-child { margin-bottom: 0; }
+  .faq-intro {
+    text-align: center;
+    margin-bottom: 48px;
+    font-size: 17px;
+  }
+  .faq-intro .q { color: var(--sand-ink); font-style: italic; }
+
+  /* ---------- Final CTA ---------- */
+  .final-cta {
+    text-align: center;
+    padding: 96px 32px;
+  }
+  .final-cta h2 { color: #EFEBE1; font-size: 30px; margin-bottom: 32px; }
+  .final-cta .btn-primary { background: var(--yellow); color: var(--olive); }
+
+  /* Section headers */
+  .section-head { text-align: center; margin-bottom: 56px; }
+  .section-head.left { text-align: left; }
+  .section-head h2 { font-size: 30px; }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-photo { max-width: 320px; margin: 0 auto; }
+    .coach-media { grid-template-columns: 1fr; gap: 24px; }
+    .coach-media .cert-frame { max-width: 200px; margin: 0 auto; width: 100%; }
+    .coach-head { margin-bottom: 28px; }
+    .method-grid { grid-template-columns: 1fr; }
+    .about-grid { display: block; }
+    .about-media { position: static; display: block; }
+    .about-photo { width: 100%; max-width: 280px; margin: 0 auto 32px; }
+    .note-video-wrap { width: 100%; max-width: 220px; margin: 28px auto; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .testi-cta-cell { margin-top: 12px; }
+    .hero h1 { font-size: 32px; }
+    section { padding: 64px 0; }
+    .hero { padding: 64px 0; }
+    .resonate { padding: 0 24px; }
+    .editorial { padding: 0 24px; }
+    table.diff-table { font-size: 14px; min-width: 560px; }
+    table.diff-table th, table.diff-table td { padding: 12px 12px; }
+  }
+
+  /* ---------- Footer ---------- */
+  .site-footer {
+    background: var(--white);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border-top: 1px solid var(--sand);
+  }
+  .site-footer .copy {
+    font-size: 13px;
+    color: var(--sand-ink);
+  }
+  .site-footer .icons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .site-footer a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: var(--sand-ink);
+    transition: color 0.2s ease;
+  }
+  .site-footer a:hover { color: var(--olive); }
+  .site-footer svg { width: 20px; height: 20px; }
+  @media (max-width: 480px) {
+    .site-footer { flex-direction: column; gap: 12px; padding: 24px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="pathless-nav" id="pathlessNav">
+  <div class="pathless-nav-inner">
+    <button class="pathless-nav-toggle" id="pathlessNavToggle" aria-label="展開選單" aria-expanded="false">
+      <span></span>
+    </button>
+    <div class="pathless-nav-links" id="pathlessNavLinks">
+      <a href="#who-fits">服務適合誰</a>
+      <a href="#what-is-coaching">教練是什麼</a>
+      <a href="#brand-philosophy">品牌哲學</a>
+      <a href="#method">整合專業的系統</a>
+      <a href="#about-claire">關於 Claire</a>
+      <a href="#service-detail">服務內容</a>
+      <a href="#plan-pricing">流程與方案</a>
+      <a href="#ideal-blueprint">一起前往理想藍圖</a>
+      <a href="#testimonials">客戶見證</a>
+      <a href="#faq">問與答</a>
+    </div>
+    <a href="https://tally.so/r/QKaNvG?source=top" target="_blank" rel="noopener" class="pathless-nav-cta">預約首談</a>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<div class="cover-photo">
+<img src="images/cover-illustration.png" alt="花卉插畫封面圖">
+</div>
+<section class="hero">
+  <div class="wide hero-grid">
+    <h1>跨越了一個個職涯里程碑，<br>現在，工作以外的你也即將綻放。</h1>
+    <div class="sub-label">每月一次的「自我狀態對焦」</div>
+    <p class="hero-desc">陪你為心裡的花園鬆土、澆水，在恢復裡，練習覺察；<br>在覺察裡，長出屬於你的行動。<br><br><span class="hl">每月一次，不只陪你回顧反思，更帶你對焦下一步。<br>用一對一教練式對談，創造，不只被工作定義的自己。</span></p>
+  </div>
+</section>
+
+<!-- ========== 適合誰 ========== -->
+<section class="bg-white" id="who-fits">
+  <div class="resonate">
+    <span class="eyebrow">Is this you?</span>
+    <h2 style="margin-bottom:32px;">專為這樣的你設計的服務</h2>
+    <p>有一種人，對於工作似乎很能掌握要領，總能快速上手，很懂得「如何做事」。</p>
+    <p>這樣的人，在職場中很容易獲得同事的肯定、上司的賞識。你很努力、學得快、扛得住責任。出社會沒幾年，你可能已經拿到不錯的 title、收入，升遷的速度也比同齡人快一些。</p>
+    <p>但心裡也許藏著一種說不出口的不安：</p>
+    <div class="quote-line">「怕別人發現，我其實資歷還淺。」<br>「怕現在的位置，只是運氣好，不是真的夠格。」</div>
+    <p>你很會完成外在任務，卻不太確定，怎麼經營工作以外的生活：</p>
+    <div class="quote-line">「除了工作以外，我好像沒有『自己的事』？」<br>「我好想為自己做點什麼，但一想到要持續、要做得好，還沒開始就感到壓力。」</div>
+    <p>但你其實心中有更大的期待：</p>
+    <div class="quote-line">「我想成為一個工作很好，生活也很好的人。」<br>「我想找到一件真心投入、只為了自己而做的事，不是為了證明什麼。」</div>
+    <p>你不是沒有方向的人。你只是工作以外的自己，還沒有機會，好好長出來。</p>
+    <p class="closer">我想和你説：你渴望的那些，不是奢求。<br>你有能力抵達自己想去的地方，成為自己想成為的人。你只是需要一個可以把工作以外的自己，好好地種下、慢慢養大的地方。</p>
+  </div>
+</section>
+
+<!-- ========== 教練是什麼 ========== -->
+<section class="bg-cream" id="what-is-coaching">
+  <div class="read">
+    <div class="section-head left coach-head">
+      <span class="eyebrow">Coaching</span>
+      <h2>教練，是一門有歷史的專業學科</h2>
+    </div>
+    <div class="coach-body">
+      <div class="coach-quote">如果你的身體已經受傷了，你需要的是醫生或物理治療師，先把自己治療回健康的狀態。<br><br>如果你身體是健康的，且想要練出好看的體態，你需要的是教練，陪你用正確、不受傷的方式，一步步達成你想要的樣子。</div>
+      <p style="font-size:17px;">教練（Coach）是一門超過 <span class="hl">30 年歷史</span>的專業學科，早在 15 世紀的歐洲，就已經出現了「Coach」這個字詞，當時指的是一種載人的四輪馬車，延伸出「帶領他人由現狀到達目的地」的意思。</p>
+        <p style="margin-top:14px; font-size:17px;">1990 年代起，教練逐漸成為一門完整的專業學科，國際上成立了許多專業機構，如 <span class="hl">ICF（國際教練聯合會）</span>，是全球最大、最具公信力的教練組織，制定嚴謹的倫理規範與能力標準，並提供國際認證。</p>
+      <div class="coach-media">
+        <div class="media-col">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/Yi367FBm8Ik" title="What is Coaching" allowfullscreen></iframe>
+        </div>
+        <p class="note-video-caption">什麼是教練？- ICF 官方影片</p>
+        </div>
+        <div class="media-col">
+        <div class="cert-frame">
+          <img src="images/icf-certificate.jpg" alt="ICF 認證教練訓練證書｜Diploma of Professional Coaching">
+        </div>
+        <p class="note-video-caption">ICF 認證教練訓練證書</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:20px; margin-bottom:24px; text-align:center;">教練與其他專業的差異</h3>
+    <div class="table-scroll">
+    <table class="diff-table">
+      <tr>
+        <th>專業/職業</th>
+        <th>著重點</th>
+        <th>典型情境</th>
+        <th>核心特點</th>
+      </tr>
+      <tr class="highlight">
+        <td>教練</td>
+        <td>聚焦當下與未來、突破與成長</td>
+        <td>壓力調節、內耗卡點、自我覺察</td>
+        <td>以提問引導覺察為主，偶爾在必要時，也會分享觀察與建議</td>
+      </tr>
+      <tr>
+        <td>諮商</td>
+        <td>處理過往經驗、心理困擾</td>
+        <td>過去創傷、心理健康議題</td>
+        <td>大多聚焦「過去」，協助修復與療癒</td>
+      </tr>
+      <tr>
+        <td>顧問</td>
+        <td>提供專業解決方案</td>
+        <td>特定專業領域的問題</td>
+        <td>大多直接「給答案」，輸出解方</td>
+      </tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3.5 服務一句話說明 ========== -->
+<section class="bg-white" id="session-snapshot">
+  <div class="wide">
+    <div class="summary-card">
+      <span class="tag">一對一・教練式對談</span>
+      <h3>每月一次的「自我狀態對焦」</h3>
+      <p>有一個人固定陪你<span class="hl">回顧上個月、一起訂出下個月的方向</span>：陪你反思、覺察、設定目標，並設計具體的行動。</p>
+      <p>每一次都會依你當下的狀態，圍繞三個方向展開：<span class="hl">辨認身心負荷</span>，練習恢復；<span class="hl">看見卡住背後在保護的擔憂</span>，慢慢鬆開；<span class="hl">把模糊的想法，梳理成具體方向</span>。</p>
+      <p>對談中這三個方向的比重，會依據你的狀態動態調整。且<span class="hl">每一次你都會帶走一個自己想出來、可以執行的行動</span>，讓你確實感受到，自己正在一點一點往前走。</p>
+      <div class="btn-wrap"><a href="#service-detail" class="btn btn-ghost" style="border-color:var(--yellow); color:var(--yellow);">看看每一次對談，你會獲得什麼</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 品牌哲學 ========== -->
+<section class="bg-cream" id="brand-philosophy">
+  <div class="editorial">
+    <span class="eyebrow">Philosophy</span>
+    <h2 style="margin-bottom:32px;">品牌哲學：幫助你建立自我教練的能力</h2>
+    <p>理解自己，不是為了想更多，而是為了更有能力打理自己的生活。</p>
+    <p>很多人很會工作、很會完成任務、很會達成外部標準，但這些能力不一定會自動延伸到生活的其他面向。<span class="hl">工作可以是生活裡很重要的一部分，但它不該是唯一支撐價值感、意義感與身份認同的地方。</span></p>
+    <p class="pull">行動力不是靠逼自己變得更努力，而是來自於更清楚地理解自己：就像在夜裡航行，真正重要的不是划得多用力，而是有沒有找到那顆屬於自己的北極星。</p>
+    <p><span class="hl">我把這種能力稱為個人內在導航系統：</span>知道自己現在在哪裡、真正重視什麼、哪些地方只是憑慣性在划，以及下一步可以怎麼用低風險的方式，重新校準方向。</p>
+    <p>但找到方向，只是這套系統的一半。另一半，發生在你腳下的土地裡。</p>
+
+    <div class="inline-photo"><img src="images/fairy-garden-starlight.jpg" alt="小精靈在星空下的花園裡種植，呼應北極星與花園意象"></div>
+
+    <p>生活裡那些一閃而過的念頭、好奇、不上不下的情緒，都像一顆顆被你隨手撿起、種進土裡的種子。<span class="hl">你不會知道哪一顆會發芽，哪一顆會枯萎，哪一顆，說不定就是那顆能一路往上長、通往你北極星的魔豆。</span></p>
+    <p>但你不需要提前猜對哪一顆才是。<span class="hl">每一顆，都值得給它一個機會，種種看、玩玩看，不帶壓力地試一次。</span>大不了，每一顆都長出來了，它們可能都不算太大，但你會擁有的，是一座屬於自己的「漂亮的花園」。</p>
+    <p>它不是替你指出唯一正確的座標，也不是要你立刻轉向。而是幫助你，一邊看著星圖確認方向，一邊也顧好腳下那片土，把模糊的感受、渴望、卡住與想法，慢慢照顧成看得見的樣子。</p>
+    <p style="font-weight:600; color:var(--olive);">當你越能讀懂這張星圖、也越懂得怎麼照顧這片土，就越能在工作、生活、關係、身體、創作與個人探索之間，找到屬於自己的航線與花園。</p>
+  </div>
+</section>
+
+<!-- ========== 方法論 ========== -->
+<section class="bg-white" id="method">
+  <div class="mid">
+    <div class="section-head left">
+      <span class="eyebrow">Methodology</span>
+      <h2>一套整合了教練學、正向心理學與行為科學的系統</h2>
+      <p style="margin-top:16px; font-size:17px;">我的方法，不是憑感覺聊天，而是整合了幾個專業視角：</p>
+    </div>
+    <div class="method-grid">
+      <div class="method-card full">
+        <h4>符合 ICF 規範的教練框架</h4>
+        <p>教練的預設，不是替你做決定，而是<span class="hl">透過提問與傾聽，陪你自己找到答案</span>。這聽起來或許比「直接告訴你該怎麼做」更慢，但這個答案是你自己長出來的，會更貼近真實的你，也更持久，不會你一離開對話，就不知道該怎麼繼續下去。<br><br>但如果我觀察到一些什麼、或你主動想聽聽我的想法，我也會分享，只是會先說明：這時候的我不是以教練的姿態給你我的觀點，無論如何，決定權還是在你手上。</p>
+      </div>
+      <div class="method-card">
+        <h4>生理激素與身心能量</h4>
+        <p>卡住你的，往往不只是想法，而是身體長期處在某種壓力狀態下的反應；而讓你願意行動的，也不只是意志力，還有<span class="hl">身心整體的能量狀態</span>。學會辨認這些訊號，不只是為了修復，更是為了找回一種不逼迫自己、也能自然而然想往前走的動力。</p>
+      </div>
+      <div class="method-card">
+        <h4>正向心理學</h4>
+        <p>不從「哪裡有問題」出發，而是從<span class="hl">「你已經擁有的資源與優勢」</span>出發，找到屬於你的成長路徑。每個人身上都有與生俱來、特別擅長的特質，只是未必被自己看見。辨認這些優勢，往往比一直補足缺點，更能帶你靠近一個有活力的生活狀態。</p>
+      </div>
+      <div class="method-card">
+        <h4>NLP（神經語言程式學）</h4>
+        <p><span class="hl">覺察你如何用語言、用思維模式，建構了自己看世界的方式</span>，進而練習更貼近自己的表達與行動。很多卡住我們的，不是事情本身，而是我們描述這件事情的方式，久而久之，走成了一條大腦最熟悉的路。要調整它，光靠「想通」不夠，還需要透過行動，一次次走出新的路徑。</p>
+      </div>
+      <div class="method-card">
+        <h4>自我評估工具與框架</h4>
+        <p>除了對話本身，我也會依照你的狀態，帶入一些我自己設計的<span class="hl">評估表、練習模板與思考框架，讓覺察不只停留在感受層面</span>，而是有具體的輔助工具，讓你更有效率地看清楚自己。</p>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:40px; font-size:17px; font-weight:500; color:var(--olive);">這些方法不是分開使用的工具，而是陪你慢慢建立自己的個人內在導航系統，在卡住的時候，找到屬於自己的方向。</p>
+    <div class="btn-wrap"><a href="https://tally.so/r/QKaNvG?source=method" target="_blank" rel="noopener" class="btn btn-yellow">想先體驗，看看這套方法適不適合你？</a></div>
+  </div>
+</section>
+
+<!-- ========== 我是誰 ========== -->
+<section class="bg-cream" id="about-claire">
+  <div class="mid">
+    <div class="section-head left">
+      <span class="eyebrow">About Claire</span>
+      <h2>建立我的「無路之路」，抵達內心真正想去的地方</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-media">
+      <div class="about-photo">
+        <img src="images/claire-photo.jpg" alt="Claire 的個人照片">
+      </div>
+      <div id="videoSlotSidebar"></div>
+      </div>
+      <div class="about-text-1">
+        <p>我是 <strong>Claire</strong>，曾任軟體業 PM，26 歲那年，就被交付了一個公司的重大專案，完全沒有 PM 背景與經驗的我，為了職涯發展，就這樣自告奮勇地站上了第一線。</p>
+        <p>那時候的我，每天都活在一種說不出口的緊繃裡：怕被拆穿其實我沒那麼懂，怕自己的不確定被人看穿，只能一邊靠直覺硬撐，一邊拚命確保表面上一切都在掌控之中。<span class="hl">這其實就是很典型的冒牌者症候群——你越是被賦予重任，心裡越是害怕，有一天大家會發現「其實我也不知道自己在幹嘛」。</span></p>
+        <p>「盡力做到最好」是我從小被教會的價值觀。只是那時候的我，一直搞不清楚「盡力」的定義，我總覺得，只有把自己逼到精疲力竭，才算對得起自己。所以我很擅長用力，卻不擅長停下來。</p>
+        <p>直到有天，同事隨口問我「假日都在幹嘛」，我發現自己答不出來。<span class="hl">我開始意識到，除了工作，我好像沒有任何一件事，是我真心花時間投入、累積的。</span></p>
+        <p>更讓我害怕的是，我發現自己漸漸不敢做夢了，那個曾經很敢想像理想生活的自己，好像已經很久沒有出現過。</p>
+        <p>我很清楚自己理想中的生活長什麼樣子，卻感覺不到自己正在往那裡前進。<span class="hl">這種落差，讓我陷入一種很深的習得性無助，我開始懷疑，自己是不是根本沒有能力，帶自己去過那種理想的生活。</span></p>
+
+        <div class="pull-quote">而最讓我害怕的，如果我真的「連嘗試都不敢」了，我將一輩子困在自己不喜歡的生活裡。</div>
+
+        <p>後來，我 burnout 了，選擇<strong>裸辭</strong>。</p>
+        <p>我不後悔這個決定。那段路，讓我開始練習感受「我對什麼有反應」，也讓我重新拾回敢做夢的能力。</p>
+        <p>我有一份自己維持至今的紀錄，叫做 <strong>Decision Log（決策足跡）</strong>——每一次重大的決定、每一次想法上的突破，我都會寫下來，讓自己未來可以回頭看見，自己是怎麼一步步走到這裡的。</p>
+      </div>
+
+      <div id="videoSlotText"></div>
+      <div class="note-video-wrap" id="noteVideoWrap">
+          <div class="note-video">
+            <video autoplay muted loop playsinline preload="metadata">
+              <source src="images/decision-log-video.mp4" type="video/mp4">
+            </video>
+          </div>
+          <p class="note-video-caption">我的 Decision Log 筆記</p>
+      </div>
+
+      <div class="about-text-2">
+        <p>從那段練習開始，我一步一步走上了教練這條路，並在澳洲完成了 <strong>ICF 專業教練訓練</strong>。<span style="font-weight:600; color:var(--olive);">也是在那段路上，我才發現，教練這套信念體系，跟我自己一直以來相信的世界觀，重疊度高得驚人：</span><span class="hl">相信每個人都有屬於自己的路，相信每個人都擁有內在的資源與力量，也相信行動本身，就能帶來改變。</span></p>
+
+        <div class="pull-quote">裸辭讓我走到了現在這條路，但我很清楚，這不是每個人都需要、也不是每個人都適合的選項。</div>
+
+        <p>更多時候，<span class="hl">真正需要學習的，是怎麼在人生的各個面向之間，找到屬於自己的平衡</span>：壓力的調適、職涯上的追求、工作以外的自己與生活、心理的狀態、關係的經營。</p>
+        <p>這些事情，本來就不是年輕時的我們，天生就懂得怎麼兼顧的。在對自己、對世界都還不夠認識的階段，卻要一次面對這麼多困難的決策與學習，真的很不容易。</p>
+        <p style="font-weight:600; color:var(--olive);">我想做的，就是陪你，讓這條路走得，稍微不那麼辛苦一點。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 服務在做什麼 ========== -->
+<section class="bg-white" id="service-detail">
+  <div class="read">
+    <div class="section-head left">
+      <span class="eyebrow">What we do</span>
+      <h2>為什麼需要定期進行「自我狀態對焦」</h2>
+    </div>
+
+    <div class="garden-block">
+      <p>你有沒有想過，為什麼健身教練總會問你「平常都吃什麼」？身體是很誠實的，吃進去什麼，就長成什麼樣子。<span class="hl">心力也是一樣——你把注意力放在哪裡，哪邊就會有所累積。</span>若是把大部分心力都放進了工作裡，工作這一塊就會長得特別茂盛。</p>
+      <p style="margin-top:16px;">而工作以外的自己呢？也許只是還沒被澆過水，不代表它長不出來。你其實一直都在澆水的：看的那些書、上的那些課，都是你想讓自己更完整的嘗試。</p>
+      <p style="margin-top:16px;">只是有些土壤比較難自己鬆開，尤其是關於「認識自己」這件事，光靠自己讀、自己想，常常會卡在同一個地方繞。</p>
+      <p style="margin-top:16px;">找一個人陪你一起鬆土，不是因為你種得不好，只是有些地方，<span class="hl">兩雙手合作會比一個人快一點</span>。</p>
+    </div>
+
+    <div class="garden-block">
+      <h4>沒有一種澆灌方式，適合所有植物</h4>
+      <p>好的土壤，從來不會挑剔你種下的種子。你想到什麼、感覺到什麼，都可以直接放進來，不用先修剪成「聽起來夠成熟」的樣子。不同的植物需要不同的照顧方式：明明是耐旱的仙人掌，卻天天澆水，或明明需要陽光，卻放在陰影裡，再用心也長不好。<span class="hl">我會陪你先認出自己的土質，用真正適合你的方式，去記錄、去照顧。</span></p>
+    </div>
+
+    <div class="garden-block">
+      <h4>你是這片土地的園丁，我在旁邊幫你注意天象</h4>
+      <p>這片土地，一直是你在照顧、你在決定要種什麼、要往哪個方向長。我比較像是在你身邊，幫你注意周遭環境，提醒你可能太靠近了，反而看不清楚哪裡土壤乾了、哪裡雜草悄悄長出來了。</p>
+      <p style="margin-top:16px;">身在花園裡的人，往往最難看見自己花園的全貌。<span class="hl">自己摸索，可能要繞很多路才找得到問題出在哪。</span>有一個人陪你一起，或許能走得快一些、輕鬆一點。</p>
+    </div>
+
+    <div class="inline-photo"><img src="images/fairy-garden-partners.jpg" alt="兩個小精靈夥伴一起在花園裡種花，呼應平等陪伴的意象"></div>
+
+    <h3 style="font-size:22px; margin: 56px 0 8px;">每月我們會聊到的內容</h3>
+    <div class="talk-grid">
+      <div class="talk-card">
+        <span class="label">壓力負荷</span>
+        <h5>自我修復與調整</h5>
+        <p>辨認你現在的身心負荷狀態，練習找到<span class="hl">適合自己的恢復方式</span>，而不是忽略、硬撐。</p>
+      </div>
+      <div class="talk-card">
+        <span class="label">釐清卡點</span>
+        <h5>了解卡住的背後在保護什麼</h5>
+        <p>有時候，你會發現自己明明想做一件事，卻遲遲動不了。這種卡住，有時候來自於一種不自覺的<span class="hl">「限制性信念」</span>，一個你可能從沒意識到、卻默默影響著你的想法。它很少是無緣無故出現的，通常是在保護你某個更深層的擔憂。我們會一起把它認出來，再慢慢鬆開它。</p>
+      </div>
+      <div class="talk-card">
+        <span class="label">目標方向</span>
+        <h5>釐清你想往哪裡走</h5>
+        <p>當你已經準備好往前，我們會一起把模糊的想望，梳理成具體的方向。</p>
+      </div>
+    </div>
+
+    <p style="font-size:17px;">每一次的對談，都會根據你的需求與狀態，以上三點為核心進行客製化配比。<span class="hl">每一次對談結束時，你都會帶走一個自己想出來的、可以執行的行動</span>，讓你確實感受到，自己正在一點一點往前走。</p>
+
+    <div class="btn-wrap"><a href="https://tally.so/r/QKaNvG?source=service_detail" target="_blank" rel="noopener" class="btn btn-yellow">透過對談，讓工作以外的自己長出來</a></div>
+  </div>
+</section>
+
+<!-- ========== 服務流程／方案結構 ========== -->
+<section class="bg-cream" id="plan-pricing">
+  <div class="wide">
+    <div class="section-head">
+      <span class="eyebrow">Plan &amp; Pricing</span>
+      <h2>服務流程／方案結構</h2>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-row">
+        <div class="ptitle"><span>首談</span><span>NT$800</span></div>
+        <p>一次 60 分鐘的對話，讓我們認識彼此、了解你目前的狀態與需求。過程中，我會帶你實際體驗一次 mini coaching，感受這個系統怎麼運作，也會留時間回答你的疑問。</p>
+      </div>
+      <div class="pricing-row featured">
+        <div class="ptitle"><span>正式方案</span><span>NT$5,999</span></div>
+        <p>為期 3 個月，每月一次 1.5 小時。<br><br>確認展開正式合作時，首談的 NT$800 會從正式方案的費用中扣除，也就是首談加上三個月的正式服務，總價為 NT$5,999。</p>
+        <div class="limit-tag">每月僅開放 5-7 個首談名額</div>
+      </div>
+    </div>
+
+    <div class="why-panel">
+      <h5>為什麼是每月一次、持續 3 個月？</h5>
+      <p><span class="hl">根據腦科學研究，持續且規律的練習，大約需要 4-6 週，才能開始出現可觀察到的變化；</span><span style="font-weight:600; color:var(--olive);">若能維持 8-12 週的規律練習，這些改變會更穩固。</span></p>
+      <p>這也是為什麼，每一次對談結束時，你都會帶走一個具體的行動，不管那次聊的比重落在修復、鬆綁，或是方向上，<span class="hl">這個行動的功能，就是讓改變有機會被真正「走出來」，而不只是停留在想清楚的階段。</span>每個月一次，剛好是讓你有時間，把這個行動真正走過一遍、留下一點痕跡，再回來看下一步。</p>
+      <p><span class="hl">這就是為什麼，這個服務的節奏設計成每月一次、至少 3 個月，</span><span style="font-weight:600; color:var(--olive);">不是一次性的深聊，而是讓改變有時間，真正在生活裡扎根。</span></p>
+    </div>
+
+    <div class="btn-wrap"><a href="https://tally.so/r/QKaNvG?source=plan_pricing" target="_blank" rel="noopener" class="btn btn-primary bordered">準備好了，保留我的首談名額</a></div>
+  </div>
+</section>
+
+<!-- ========== 數據視覺化 ========== -->
+<section class="bg-white" id="coaching-is-common">
+  <div class="wide">
+    <div class="section-head">
+      <span class="eyebrow">It's not just you</span>
+      <h2>找教練，比你想的更普遍</h2>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-block">
+        <div class="num">78%</div>
+        <p>史丹佛大學曾訪問兩百多位企業執行長與高階主管，發現找教練這件事，多半不是被誰要求的：<span class="hl">高達 78% 的執行長，是自己主動提出想要找教練的</span>。而幾乎所有受訪的執行長，都表示自己很享受被教練陪伴、被引導思考的過程。</p>
+        <div class="stat-source">資料來源：Stanford Graduate School of Business, 2013 Executive Coaching Survey</div>
+      </div>
+      <div class="stat-block">
+        <div class="num">80% / 73%</div>
+        <p>根據 ICF（國際教練聯合會）的調查，接受過教練陪伴的人裡，<span class="hl">八成表示自尊與自信因此提升</span>，超過七成表示人際關係、溝通、工作表現與生活平衡，都因此變得更好。</p>
+        <div class="stat-source">資料來源：ICF Global Coaching Study</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 理想藍圖 ========== -->
+<section class="bg-cream" id="ideal-blueprint">
+  <div class="editorial">
+    <span class="eyebrow">The picture ahead</span>
+    <h2 style="margin-bottom:32px;">你會慢慢走向你理想的樣子</h2>
+    <p>你或許也羨慕過那樣的人。工作能力很強，判斷成熟，狀態穩定，讓人信任，但你真正欣賞的，可能不只是他們的能力與工作表現。</p>
+    <p>你羨慕的是：他們好像沒有被工作吃掉。他們明明也很忙，卻看起來有能力維持自己。他們有關係、有生活品質，甚至還有一個真心喜歡的興趣。他們不是只在公司裡發光，回到生活裡，也一樣完整地閃耀著。</p>
+    <p class="pull">原來優秀不一定要以犧牲生活為代價。原來一個人可以很有企圖心，也同時把自己照顧好。</p>
+    <p>你或許不知道，這樣的狀態，很多時候不是靠意志力硬撐出來的。<span class="hl">就像頂尖的運動員，不會只靠一位教練練體能、練技術，身邊往往還有一位專屬的心態教練，陪他們在賽場之外，把狀態整理好。</span>越是站在高處的人，越懂得這件事：光靠意志力衝刺，撐不了太久，真正走得久的人，身邊都留了一個陪他們看路的人。</p>
+    <p>你想靠近的，也許不是複製他們的人生，而是那種 <span style="font-weight:600; color:var(--olive);">well-maintained</span> 的狀態，工作有成果，但身心沒有被耗盡；離開工作場域之後，也還有能讓自己穩住、恢復、感覺活著的東西。</p>
+    <p>而這樣的狀態，很少是一次頓悟得來的。更像是那些每天為土地澆一點水、定期看看天象的人，他們的花園，是一次次微小的照顧，慢慢養出來的，不是某天突然決定「我要開始好好生活」，就自動長成的。</p>
+
+    <div class="inline-photo"><img src="images/people-picnic-lifestyle.jpg" alt="人們在草地上閱讀、野餐、跳舞，享受生活中的片刻"></div>
+    <p>這也是為什麼，每個月留一段時間，回到自己身上，看看這陣子哪裡乾了、哪裡需要鬆土、哪個方向的陽光被忽略了，會是這整片花園，能持續被照顧下去的原因。不是一次性的澆灌，而是一個你可以持續倚靠的節奏。</p>
+    <p>這正是這個服務想陪你走向的地方：<span class="hl">不只是把工作做好，也能自我調適壓力、更認識自己真正的需求。</span>你會開始擁有一件純粹為了自己而做的事，<span class="hl">一個工作以外的生活支點，甚至是新的身份認同與價值感來源</span>。</p>
+    <p style="font-weight:600; color:var(--olive);">你不需要現在決定辭職，不一定得人生大轉彎，就能成為一個工作與生活，都被好好照顧著的人。</p>
+  </div>
+</section>
+
+<!-- ========== 見證 ========== -->
+<section class="bg-white" id="testimonials">
+  <div class="wide">
+    <div class="section-head">
+      <span class="eyebrow">Testimonials</span>
+      <h2>聽聽他們的聲音</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-title"><span class="key">安全</span>｜在一個不被評價的空間裡，把真實的糾結說出口</div>
+        <img src="images/testimonial-verna.png" alt="VERNA 的對話截圖">
+      </div>
+      <div class="testi-card">
+        <div class="testi-title"><span class="key">辨識</span>｜終於有語言，可以描述那種說不出的無助</div>
+        <img src="images/testimonial-vivian.png" alt="VIVIAN 的對話截圖">
+      </div>
+      <div class="testi-card">
+        <div class="testi-title"><span class="key">釐清</span>｜把打結的思緒，梳理成一個能往前走的方向</div>
+        <img src="images/testimonial-jing.png" alt="JING 的對話截圖">
+      </div>
+      <div class="testi-card">
+        <div class="testi-title"><span class="key">具體</span>｜從模糊的方向，到一個做得到的下一步</div>
+        <img src="images/testimonial-owen.png" alt="OWEN 的對話截圖">
+      </div>
+      <div class="testi-card">
+        <div class="testi-title"><span class="key">行動</span>｜從反覆猶豫到清晰決斷，勇敢做出讓自己開心的選擇</div>
+        <img src="images/testimonial-patty.png" alt="PATTY 的對話截圖">
+      </div>
+      <div class="testi-cta-cell">
+        <a href="https://tally.so/r/QKaNvG?source=testimonials" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">輪到你，在工作之餘綻放了</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section class="bg-cream" id="faq">
+  <div class="narrow">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>其他你可能好奇的問題</h2>
+    </div>
+    <div class="faq-intro">
+      在開始之前，你可能會想知道<br><span class="q">「適不適合我？會不會有壓力？內容會保密嗎？」</span><br>
+      這裡整理了最常見的問題與解答，讓你清楚了解，並放心給自己這次機會～
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q"><span>我還不太清楚自己確切的問題是什麼，這樣適合嗎？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>完全可以。即使只是覺得「卡住」或「混亂」，沒有清楚的問題，對話本身也能幫助你慢慢釐清。</p>
+          <p>很多人一開始覺得自己沒什麼可說，但在過程中往往會找到真正重要的議題。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>我怕自己表達不好，會不會影響效果？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>完全不用擔心。對話不是考試，你不需要有「完美答案」。我的角色是透過提問和引導，幫助你把模糊的想法逐步說清楚。</p>
+          <p>即使語無倫次，也是對話自然的一部分。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>教練真的能幫助我嗎？多久才會有收穫？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>每個人的狀態不同，有些人會在第一次首談後就感受到清晰的變化。</p>
+          <p>根據腦科學研究，持續且規律的練習，大約需要 4-6 週才會開始出現可觀察到的改變，若能持續 8-12 週，這些改變會更穩固。這也是為什麼這個服務設計成每月一次、至少 3 個月，每次對談後帶走的具體行動，就是讓改變真正有機會被「走出來」，而不只是停留在想清楚的階段。</p>
+          <p>不論進度快慢，每一次對話都會有所收穫與推進。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>這個服務，不適合什麼樣的人？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>若你正在經歷心理創傷、心理健康相關的困擾，或需要的是醫療、法律、財務方面的專業建議，教練對談無法取代這些專業協助，會建議優先尋求相關領域的合格專業人員。</p>
+          <p>教練的陪伴，適合建立在你已經相對穩定的基礎上，如果你想要的是，在忙碌的生活裡，有一個穩定的節奏，陪你辨認卡住的地方、恢復能量、慢慢長出工作以外的自己，這正是這個服務想做的事。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>首談需要付費嗎？會不會被強迫推銷？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>首談的費用為 NT$800，是一次 60 分鐘的對話，目的是讓你親身體驗一次教練式對話、實際感受這個系統怎麼運作。</p>
+          <p>要不要繼續正式服務，全由你決定。若確認展開正式合作，首談費用會從正式方案總價中扣除。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>教練對談的內容會保密嗎？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>會的。不論是首談或正式合作，所有對話、表單、筆記都遵循教練倫理與保密原則，不會外流或被第三方得知。正式合作會另外簽訂合約，確保雙方的權益。若未來需要引用你的故事（例如社群貼文），我會事先徵求你的同意，並將資訊完全去識別化。</p>
+          <p>你可以放心，這是一個安全而私密的空間。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>如果我不想聊某些問題，可以嗎？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>當然可以。你永遠有選擇權，只需要回答你願意分享的部分。教練對話不是強迫挖掘，而是尊重你、陪伴你在最舒服的節奏裡探索。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>每月對談之間若遇到問題該怎麼辦？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>每月對談之間，我會提供 2 次訊息回報的額度，針對我們當月一起設計的行動，你可以簡短回報進度或卡點，我會在 24 小時內回覆。</p>
+          <p>這個額度是為了聚焦在當月的行動設計，不是即時聊天室；若有更即時或更頻繁討論的需求，會需要另外安排一次對談時間，費用另計。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>如果臨時需要改期，怎麼辦？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>若遇不可抗力因素需改期，首談提供 1 次的改期彈性，且需於 24 小時前提出；若在 24 小時內才提出改期，需收取首談費用的 50%，並依照當月剩餘名額，另約時間。若當月名額已滿，則會遞延至下一個可預約的月份，並保有該月的優先預約權。</p>
+          <p>正式方案期間，每一次對談的時間，都可以由任一方提出更改，最多可調整 2 次，並須於 24 小時前提出，我們會另外安排雙方都合適的時間，不會產生額外費用。若在預定時間前 24 小時內才提出改期，將需支付原定費用的 50%。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>如果我真的想聽教練的主觀意見/想法，可以嗎？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>可以。在教練過程中，我主要透過提問與引導，幫助你自己找到答案。但如果你希望聽到我的觀點，我會誠實分享，把它當作一個「參考角度」。最終選擇權仍在你手裡。</p>
+        </div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>如果我沒有完成我們一起制定的行動，怎麼辦？</span><span class="icon"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">
+          <p>這很常見。行動不是要「完美執行」，而是透過嘗試帶來新的覺察。即使沒有完成，我們也會一起回顧，調整步驟，找到更適合你的方式。</p>
+          <p>每一次的經驗，都是推進的一部分。</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 最終CTA ========== -->
+<section class="bg-olive final-cta" id="final">
+  <h2>開始創造，不只被工作定義的自己</h2>
+  <a href="https://tally.so/r/QKaNvG?source=final" target="_blank" rel="noopener" class="btn btn-primary">預約首談</a>
+</section>
+
+<script>
+(function () {
+  function placeVideo() {
+    var wrap = document.getElementById('noteVideoWrap');
+    var sidebarSlot = document.getElementById('videoSlotSidebar');
+    var textSlot = document.getElementById('videoSlotText');
+    if (!wrap || !sidebarSlot || !textSlot) return;
+    var isDesktop = window.matchMedia('(min-width: 861px)').matches;
+    if (isDesktop) {
+      if (wrap.parentElement !== sidebarSlot) sidebarSlot.appendChild(wrap);
+    } else {
+      if (wrap.previousElementSibling !== textSlot || wrap.parentElement !== textSlot.parentElement) {
+        textSlot.insertAdjacentElement('afterend', wrap);
+      }
+    }
+  }
+  placeVideo();
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(placeVideo, 150);
+  });
+})();
+</script>
+<script>
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const answer = item.querySelector('.faq-a');
+    const isOpen = item.classList.contains('open');
+
+    document.querySelectorAll('.faq-item.open').forEach(openItem => {
+      if (openItem !== item) {
+        openItem.classList.remove('open');
+        openItem.querySelector('.faq-a').style.maxHeight = null;
+      }
+    });
+
+    if (isOpen) {
+      item.classList.remove('open');
+      answer.style.maxHeight = null;
+    } else {
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  });
+});
+</script>
+
+<script>
+(function () {
+  var nav = document.getElementById('pathlessNav');
+  var toggle = document.getElementById('pathlessNavToggle');
+  var links = document.getElementById('pathlessNavLinks');
+  var hero = document.querySelector('.hero');
+  if (!nav || !hero) return;
+
+  function updateVisibility() {
+    var heroBottom = hero.getBoundingClientRect().bottom;
+    if (heroBottom <= 0) {
+      nav.classList.add('is-visible');
+    } else {
+      nav.classList.remove('is-visible');
+      nav.classList.remove('menu-open');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  updateVisibility();
+  window.addEventListener('scroll', updateVisibility, { passive: true });
+  window.addEventListener('resize', updateVisibility);
+
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var isOpen = nav.classList.toggle('menu-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
+  if (links) {
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('menu-open');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // ---------- 目前所在區段標示(黃色底線) ----------
+  if (links) {
+    var navAnchors = Array.prototype.slice.call(links.querySelectorAll('a[href^="#"]'));
+    var sectionMap = navAnchors.map(function (a) {
+      var id = a.getAttribute('href').slice(1);
+      return { link: a, section: document.getElementById(id) };
+    }).filter(function (item) { return item.section; });
+
+    if (sectionMap.length) {
+      var setActive = function (id) {
+        sectionMap.forEach(function (item) {
+          item.link.classList.toggle('is-active', item.section.id === id);
+        });
+      };
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '-40% 0px -55% 0px',
+        threshold: 0
+      });
+
+      sectionMap.forEach(function (item) { observer.observe(item.section); });
+    }
+  }
+})();
+</script>
+
+<footer class="site-footer">
+  <span class="copy">&copy; 2026 clairecosmos.com</span>
+  <div class="icons">
+    <a href="https://www.instagram.com/claire.cosmos/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+    <a href="https://buy.stripe.com/7sY6oHf7Ja7Dckh8DGb7y01?utm_source=1-1_coaching_LP&utm_medium=footer&utm_campaign=icon" target="_blank" rel="noopener" aria-label="Buy Me a Coffee">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/>
+        <path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/>
+        <path d="M8 3c-.6.7-.6 1.3 0 2s.6 1.3 0 2M12 3c-.6.7-.6 1.3 0 2s.6 1.3 0 2"/>
+      </svg>
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
